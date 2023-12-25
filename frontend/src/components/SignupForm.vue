@@ -1,5 +1,11 @@
 <template>
   <form>
+    <label>First name:</label>
+    <input type="text">
+
+    <label>Last name:</label>
+    <input type="text">
+
     <label>Email:</label>
     <input type="email" required>
 
@@ -8,6 +14,10 @@
 
     <label>Confirm password:</label>
     <input type="password" required>
+
+    <div class="submit">
+      <button>Submit</button>
+    </div>
 
   </form>
 </template>
@@ -44,9 +54,24 @@ input {
   border: none;
   border-bottom: 1px solid #ddd;
   color: #555;
+  outline: none !important;
 }
 
-input:focus {
-  border: 1px solid red;
+button {
+  background: #0b6dff;
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+button:active {
+  transform: translateY(2px);
+}
+.submit {
+  text-align: center;
 }
 </style>
