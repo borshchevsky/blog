@@ -1,16 +1,9 @@
 <template>
-  <SignupForm />
+  <router-view />
 </template>
 
-<script>
-import SignupForm from './components/SignupForm.vue'
+<script setup>
 
-export default {
-  name: 'App',
-  components: {
-    SignupForm
-  }
-}
 </script>
 
 <style>

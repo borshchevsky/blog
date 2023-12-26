@@ -8,11 +8,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from auth.models import Token
+from main.utils import extract_token
 
 
 class AuthView(APIView):
     @staticmethod
     def post(request):
+        token_id = extract_token(request)
+        a = request.COOKIES
+        if token_id:
+            if Token.objects.filter(id=token_id).exists():
+                return Response({'detail': 'ok'}, status.HTTP_200_OK)
         email = request.data.get('email')
         password = request.data.get('password')
         if not (email and password):
@@ -20,7 +26,12 @@ class AuthView(APIView):
         user = get_object_or_404(User, email=email)
         if not user.check_password(password):
             return Response({'error': 'Invalid email or password'}, status.HTTP_400_BAD_REQUEST)
-        return Response({'token': Token.objects.create(user=user).id}, status.HTTP_200_OK)
+        token = Token.objects.create(user=user).id
+        response = Response({'token': Token.objects.create(user=user).id}, status.HTTP_200_OK, headers={
+            'Access-Control-Allow-Credentials': True
+        })
+        response.set_cookie('Authorization', f'Bearer {token}')
+        return response
 
 
 class RegisterView(APIView):
@@ -39,8 +50,8 @@ class RegisterView(APIView):
 class CustomAuthentication(BaseAuthentication):
     def authenticate(self, request, **kwargs):
         try:
-            token_id = request.headers.get('Authorization').split('Bearer')[1].strip()
+            token_id = extract_token(request)
             user = Token.objects.get(id=token_id).user
             return user, None
-        except (IndexError, ValidationError, Token.DoesNotExist):
+        except Token.DoesNotExist:
             return None

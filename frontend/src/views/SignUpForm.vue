@@ -1,23 +1,28 @@
 <template>
   <form>
-    <label>First name:</label>
-    <input type="text">
+    <h1>Sign up</h1>
+    <div>
+      <label>First name:</label>
+      <input type="text">
 
-    <label>Last name:</label>
-    <input type="text">
+      <label>Last name:</label>
+      <input type="text">
 
-    <label>Email:</label>
-    <input type="email" required>
+      <label>Email:</label>
+      <input type="email" required>
 
-    <label>Password:</label>
-    <input type="Password" required>
+      <label>Password:</label>
+      <input type="Password" required>
 
-    <label>Confirm password:</label>
-    <input type="password" required>
+      <label>Confirm password:</label>
+      <input type="password" required>
 
-    <div class="submit">
-      <button>Submit</button>
+      <div class="submit">
+        <button>Submit</button>
+      </div>
+
     </div>
+
 
   </form>
 </template>
@@ -28,12 +33,16 @@
 
 <style scoped>
 form {
-  max-width: 420px;
-  margin: 30px auto;
+  position: absolute;
+  width: 420px;
   background: white;
   text-align: left;
   padding: 40px;
   border-radius: 10px;
+
+  top: 30%;
+  left: 50%;
+  margin: -100px 0 0 -200px;
 }
 
 label {
@@ -71,6 +80,7 @@ button {
 button:active {
   transform: translateY(2px);
 }
+
 .submit {
   text-align: center;
 }
