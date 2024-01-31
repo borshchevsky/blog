@@ -89,6 +89,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8080',
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+AUTH_USER_MODEL = 'blog_auth.User'

@@ -3,21 +3,21 @@
     <h1>Sign up</h1>
     <div>
       <label>First name:</label>
-      <input type="text">
+      <input type="text" v-model="firstName">
 
       <label>Last name:</label>
-      <input type="text">
+      <input type="text" v-model="lastName">
 
       <label>Email:</label>
-      <input type="email" required>
+      <input type="email" required v-model="email">
 
       <label>Password:</label>
-      <input type="Password" required>
+      <input type="Password" required v-model="password">
 
       <label>Confirm password:</label>
-      <input type="password" required>
+      <input type="password" required v-model="confirmPassword">
 
-      <div class="submit">
+      <div class="submit" @click.prevent="signUp">
         <button>Submit</button>
       </div>
 
@@ -28,60 +28,26 @@
 </template>
 
 <script setup>
+import {ref} from "vue";
 
+const firstName = ref('');
+const lastName = ref('');
+const email = ref('user@example.com');
+const password = ref('passwd');
+const confirmPassword = ref('passwd');
+
+const signUp = async () => {
+    await fetch('http://localhost:8000/api/v1/register', {
+    method: 'post',
+    credentials: 'include',
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': document.cookie.split('csrftoken=').slice(-1)[0].split(';')[0]
+    }
+  })
+}
 </script>
-
-<style scoped>
-form {
-  position: absolute;
-  width: 420px;
-  background: white;
-  text-align: left;
-  padding: 40px;
-  border-radius: 10px;
-
-  top: 30%;
-  left: 50%;
-  margin: -100px 0 0 -200px;
-}
-
-label {
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
-  font-size: 0.6em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-
-input {
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-  outline: none !important;
-}
-
-button {
-  background: #0b6dff;
-  border: 0;
-  padding: 10px 20px;
-  margin-top: 20px;
-  color: white;
-  border-radius: 20px;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-button:active {
-  transform: translateY(2px);
-}
-
-.submit {
-  text-align: center;
-}
-</style>
