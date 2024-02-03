@@ -4,10 +4,11 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import {computed} from "vue";
 
 const logout = () => document.cookie = 'Authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 const showLogoutButton = computed(() => document.cookie.includes('Authorization'));
+
 </script>
 
 <style>

@@ -1,10 +1,14 @@
 from rest_framework import status
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.authentication import BaseAuthentication
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
 from auth.models import Token, User
+from auth.serializers import UserSerializer
 from main.utils import extract_token
 
 
@@ -52,3 +56,16 @@ class CustomAuthentication(BaseAuthentication):
             return user, None
         except Token.DoesNotExist:
             return None
+
+
+class UserViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def get_object(self):
+        token = extract_token(self.request)
+        return get_object_or_404(Token, id=token).user
+
+    @action(detail=False, methods=['get'])
+    def get_current_user(self, request):
+        return self.retrieve(request)
