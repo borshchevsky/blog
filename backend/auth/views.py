@@ -27,7 +27,12 @@ class AuthView(APIView):
         if not user.check_password(password):
             return Response({'error': 'Invalid email or password'}, status.HTTP_400_BAD_REQUEST)
         token = Token.objects.create(user=user).id
-        response = Response({'token': token}, status.HTTP_200_OK)
+        response = Response(
+            {
+                'token': token,
+                'user': UserSerializer(user).data
+            }, status.HTTP_200_OK
+        )
         response.set_cookie('Authorization', f'Bearer {token}')
         return response
 

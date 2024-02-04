@@ -1,13 +1,12 @@
 <template>
+  <h1>Blog Page</h1>
 <div>
 
 </div>
 </template>
 
-<script>
-export default {
-  name: "BlogPage"
-}
+<script setup>
+
 </script>
 
 <style scoped>

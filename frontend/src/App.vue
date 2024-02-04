@@ -1,15 +1,24 @@
 <template>
-  <button @click="logout" v-if="showLogoutButton">Logout</button>
-  <router-view />
+  <button @click="logout" v-if="state.currentUser">Logout</button>
+  <router-view v-if="state.currentUser !== null"/>
 </template>
 
 <script setup>
-import {computed} from "vue";
+import { onBeforeMount } from "vue";
+import { getCurrentUser, state } from "@/utils";
+import router from "@/router";
 
-const logout = () => document.cookie = 'Authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-const showLogoutButton = computed(() => document.cookie.includes('Authorization'));
+const logout = () => {
+  document.cookie = 'Authorization=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  state.value.currentUser = null;
+  router.push('/signin')
+}
 
+onBeforeMount(async () => {
+  state.value.currentUser = await getCurrentUser()
+})
 </script>
+
 
 <style>
 #app {
@@ -30,7 +39,7 @@ form {
   width: 420px;
   background: white;
   text-align: left;
-  padding: 40px;
+  padding: 40px 40px 0;
   border-radius: 10px;
 
   top: 30%;

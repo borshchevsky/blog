@@ -1,29 +1,19 @@
 <template>
-  Home Page
+  <h1>Home Page</h1>
+  <div>
+    <p>{{ state.currentUser && state.currentUser.username }}</p>
+  </div>
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import { onMounted } from "vue";
+import { state } from "@/utils"
+import router from "@/router";
 
-const state = ref({
-  currentUser: null
-});
-
-const getCurrentUser = async () => {
-  const response = await fetch('http://localhost:8000/api/v1/user/get_current_user', {
-    method: 'get',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-CSRFToken': document.cookie.split('csrftoken=').slice(-1)[0].split(';')[0]
-    }
-  });
-
-  return await response.json()
-}
-onMounted(async () => {
-  state.value.currentUser = await getCurrentUser()
-  console.log(state.value.currentUser)
+onMounted(() => {
+  if (!state.value.currentUser) {
+    router.push('/signin')
+  }
 })
 </script>
 
